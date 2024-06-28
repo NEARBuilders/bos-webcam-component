@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 
 import { useRedirectMap, RedirectMapProvider } from "./utils/redirectMap";
+import Camera from "./components/Camera";
 
 function Viewer({ widgetSrc, code, initialProps }) {
   const location = useLocation();
@@ -77,6 +78,9 @@ function App(props) {
             props.to = sanitizeUrl(props.to);
           }
           return <Link {...props} />;
+        },
+        Camera: (props) => {
+          return <Camera {...props} />;
         },
       },
       features: {
