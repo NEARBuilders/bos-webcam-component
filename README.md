@@ -1,24 +1,8 @@
-# NEAR BOS Web Component ( custom element )
+# bos-webcam-webcomponent
 
-This is a Proof of Concept of embedding a NEAR BOS widget into any web application as a Web Component / Custom element.
+—> [near-bos-webcomponent](https://github.com/nearbuilders/near-bos-webcomponent) with [react-webcam](https://github.com/mozmorris/react-webcam) installed, deployed to [web4](https://web4.near.page/), in order to provide a sandbox for builders wanting to create decentralized apps with webcam.
 
-Just load react production react bundles into your index.html as shown below, and use the `near-social-viewer` custom element to embed the BOS widget.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Near social</title>
-    <script defer="defer" src="/runtime.REPLACE_WITH_BUNDLE_HASH.bundle.js"></script>
-    <script defer="defer" src="/main.REPLACE_WITH_BUNDLE_HASH.bundle.js"></script></head>
-  <body>
-    <h1>NEAR BOS embeddable custom element</h1>
-    <near-social-viewer></near-social-viewer>
-  </body>
-</html>
-```
+Latest version is deployed to [NEARFS](https://github.com/vgrichina/nearfs) to <https://ipfs.web4.near.page/ipfs/bafybeifpmvbjrw6vdzqfybsgdg4cdnl3oxwxnfchq4yi7bhqhxt23yvkyq/>
 
 ## Setup & Development
 
@@ -152,30 +136,6 @@ The above strategies require changes to be reflected either on page reload, or f
 
 This feature works best when accompanied with [bos-workspace](https://github.com/nearbuilders/bos-workspace), which will automatically inject it to the `enablehotreload` attribute if you provide the path to your web component's dist, or a link to it stored on [NEARFS](https://github.com/vgrichina/nearfs). See more in [Customizing the Gateway](https://github.com/NEARBuilders/bos-workspace?tab=readme-ov-file#customizing-the-gateway). It can be disabled with the `--no-hot` flag.
 
-## Landing page for SEO friendly URLs
-
-Normally, the URL path decides which component to be loaded. The path `/devhub.near/widget/app` will load the `app` component from the `devhub.near` account. DevHub is an example of a collection of many components that are part of a big app, and the `app` component is just a proxy to components that represent a `page`. Which page to display is controlled by the `page` query string parameter, which translates to `props.page` in the component.
-
-In order to create a SEO friendly URL for such a page, we would like to represent a path like `/devhub.near/widget/app?page=community&handle=webassemblymusic` to be as easy as `/community/webassemblymusic`. And we do not want the viewer to look for a component named according to the path.
-
-We can obtain this by setting the `src` attribute pointing to the component we want to use, and also set the `initialProps` attribute to the values taken from the URL path.
-
-An example of this can be found in [router.spec.js](./playwright-tests/tests/router.spec.js).
-
-```javascript
-test("for supporting SEO friendly URLs, it should be possible to set initialProps and src widget from any path", async ({ page }) => {
-  await page.goto("/community/webassemblymusic");
-  await page.evaluate(() => {
-    const viewerElement = document.querySelector('near-social-viewer');
-    viewerElement.setAttribute("src", "devhub.near/widget/app");
-    const pathparts = location.pathname.split("/");
-    viewerElement.setAttribute("initialProps", JSON.stringify({ page: pathparts[1], handle: pathparts[2] }));
-  });
-  await expect(await page.getByText('WebAssembly Music', { exact: true })).toBeVisible();
-});
-```
-
-Here you can see that the viewer element `src` attribute is set to use the `devhub.near/widget/app` component, and the `initialProps` set to values from the path.
 
 ## Publishing libraries to NEARFS
 
@@ -195,4 +155,4 @@ After uploading, it normally takes some minutes before the files are visible on 
 
 This is an example of the NEARFS url, and you should replace with the IPFS address you received above:
 
-<https://ipfs.web4.near.page/ipfs/bafybeicu5ozyhhsd4bpz4keiur6cwexnrzwxla5kaxwhrcu52fkno5q5fa/>
+<https://ipfs.web4.near.page/ipfs/bafybeifpmvbjrw6vdzqfybsgdg4cdnl3oxwxnfchq4yi7bhqhxt23yvkyq/>
